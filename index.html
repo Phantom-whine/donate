@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js" defer></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="border-b border-gray-100 fixed w-full bg-white z-10">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="text-xl font-medium">Donations</div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center px-4 pt-16">
+        <div class="max-w-lg w-full py-16" x-data="{ 
+            totalRaised: 12580,
+            amounts: 0,
+        }">
+
+            <!-- Content -->
+            <div class="space-y-4">
+                <div class="mb-4">
+                    <h1 class="text-3xl font-normal text-black mb-3">Support our mission</h1>
+                    <p class="text-gray-400">Type an amount to donate</p>
+                </div>
+                <input id="email" type="email" placeholder="Enter Email" class="border px-2 py-3 rounded-sm w-[100%]">
+                <div class="grid grid-cols-2 gap-4">
+                    <input id="amount" type="number" class="border px-2 py-3 rounded-sm" placeholder="Enter Amount">
+                    <button onclick="makePayment()" class="border px-2 py-4 hover:bg-black hover:text-white transition rounded-sm hover:shadow-md">Donate</button>
+                </div>
+
+                <div class="text-sm text-gray-400 text-center">
+                    Secure payment • Tax-deductible
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-100">
+        <div class="max-w-5xl mx-auto px-4 py-12">
+            <div class="mt-12 pt-8 border-t border-gray-100">
+                <div class="text-sm text-gray-400">© 2024 Organization. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+    <script>
+
+        function makePayment() {
+            var amount_input = parseInt(document.querySelector('#amount').value);
+            var email_input = document.querySelector('#email').value;
+	        FlutterwaveCheckout({
+		        public_key: 'FLWPUBK-0bebb284b2a6908b0ec23a7948646b9b-X',
+		        tx_ref: `titanic-${Math.random()*1000000000}`,
+		        amount: amount_input,
+		        currency: 'USD',
+		        payment_options: 'card, mobilemoneyghana, ussd',
+		        redirect_url: 'https://glaciers.titanic.com/handle-flutterwave-payment',
+		    meta: {
+			    consumer_id: 23,
+			    consumer_mac: '92a3-912ba-1192a',
+		    },
+		    customer: {
+			    email: email_input,
+		    },
+		    customizations: {
+			    title: 'Donations',
+			    description: 'Make your Donations',
+                logo: 'https://www.pngall.com/wp-content/uploads/7/Donation-Symbol-PNG.png'
+	    	},
+	});
+}
+    </script>
+</body>
+</html>
